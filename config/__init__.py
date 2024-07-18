@@ -1,6 +1,7 @@
 import json
 import os
 
+
 class Config:
     _config = None
 

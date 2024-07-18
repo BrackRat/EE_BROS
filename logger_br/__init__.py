@@ -2,9 +2,11 @@ from loguru import logger
 from datetime import datetime
 import os
 import sys
+from config import Config
 
 
-def setup_logger(level="DEBUG"):
+def setup_logger():
+    level = Config.get("logger.level") or "INFO"
     logs_directory = "logs"
     os.makedirs(logs_directory, exist_ok=True)
     timestamp = datetime.now().strftime("%Y-%m-%d %H-%M-%S")

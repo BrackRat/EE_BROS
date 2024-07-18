@@ -3,10 +3,10 @@ from config import Config
 from sensor.camera import ThreadedCamera
 
 if __name__ == '__main__':
-    camera = ThreadedCamera(address=Config.get('camera.address'))
+    camera = ThreadedCamera('test_camera', address=Config.get('camera.address'))
 
     while True:
-        result = camera.get_processed_data()
+        result = camera.get_data()
         if result.frame is None:
             continue
         cv2.imshow('frame', result.frame)

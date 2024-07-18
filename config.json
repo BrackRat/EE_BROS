@@ -4,10 +4,10 @@
   },
   "camera": {
     "address": 0,
-    "fps": 30
+    "fps": 60
   },
   "serial": {
-    "address": "COM6",
+    "port": "COM6",
     "baud_rate": 115200
   }
 }
