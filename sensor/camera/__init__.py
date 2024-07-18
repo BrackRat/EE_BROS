@@ -2,7 +2,6 @@ import cv2
 import threading
 import time
 from config import Config
-from logger_br import logger
 
 
 class ProcessedFrame:
