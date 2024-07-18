@@ -3,4 +3,4 @@ from logger_br import logger
 
 if __name__ == '__main__':
     config = Config()
-    logger.debug(f"config:{Config.get('DEBUG_LEVEL')}")
+    logger.debug(f"config:{Config.get('logger.level')}")

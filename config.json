@@ -1,3 +1,13 @@
 {
-  "DEBUG_LEVEL": "DEBUG"
+  "logger": {
+    "level": "DEBUG"
+  },
+  "camera": {
+    "address": 0,
+    "fps": 30
+  },
+  "serial": {
+    "address": "COM6",
+    "baud_rate": 115200
+  }
 }
