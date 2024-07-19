@@ -52,7 +52,7 @@ class FollowLineUntilTurnPoint(Task):
 
             # 通过PID控制小车
             pid_out = car.motor.pid(line_offset)
-            logger.debug(f"PID out: {pid_out}")
+            logger.debug(f"PID out: {pid_out:.2f}")
 
             speed_right = int(self.base_speed + pid_out)
             speed_left = int(self.base_speed - pid_out)
@@ -65,7 +65,7 @@ class FollowLineUntilTurnPoint(Task):
             car.motor.set_speed(speed_left, speed_right)
             time.sleep(camera.fps)
 
-            logger.debug("-" * 20)
+            logger.debug("-" * 50)
 
 
 class GoStraightTask(Task):

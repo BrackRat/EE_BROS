@@ -31,6 +31,8 @@ class SerialConnection(Communicator):
                 time.sleep(0.05)
             except Exception as e:
                 logger.error(f"Failed to send data: {text.strip()} {e}")
+        else:
+            logger.error(f"Serial connection not open. {data}")
 
     def read_data(self) -> dict | None:
         try:

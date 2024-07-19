@@ -7,7 +7,7 @@
     "fps": 60
   },
   "serial": {
-    "port": "COM6",
+    "port": "COM5",
     "baud_rate": 115200
   }
 }
