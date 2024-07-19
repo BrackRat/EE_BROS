@@ -1,37 +1,41 @@
 import time
 
-from controller.car import Motor
-from task import Task
-from logger_br import logger
+from controller.car import Car
 from sensor.camera import ThreadedCamera
-from task import ExecutionContext
-from simple_pid import PID
+from task import Task, ExecutionContext
+from logger_br import logger
 
 
-class FollowAndDetectTask(Task):
+class FollowLineUntilTurnPoint(Task):
     """
-    在跟线的同时检测岔路口和终点。
+    跟随线直到转弯点任务
     """
 
-    def __init__(self, name, base_speed=30, max_speed=50):
+    def __init__(self, name: str, base_speed: int, max_speed_dela: int, clear_pid: bool):
         super().__init__(name)
         self.base_speed = base_speed
-        self.max_speed = max_speed
+        self.max_speed = base_speed + max_speed_dela
+        self.clear_pid = clear_pid
 
     def execute(self, context: ExecutionContext):
         camera: ThreadedCamera = context['camera']
-        pid: PID = context['motor_pid']
-        motor: Motor = context['motor']
+        car: Car = context['main_car_controller']
+
+        if self.clear_pid:
+            car.motor.pid.reset()
+            car.motor.pid.setpoint = 0
 
         if camera is None:
             logger.error("Camera not found.")
             return
 
-        if pid is None:
-            logger.error("PID not found.")
+        if car is None:
+            logger.error("Car Controller not found.")
             return
 
+        # 运行，直到到达转弯点
         while True:
+            # 更新摄像头中的线
             processed_frame = camera.processed_frame
             if processed_frame is None:
                 logger.error("Processed frame not found.")
@@ -41,13 +45,13 @@ class FollowAndDetectTask(Task):
             line_offset = processed_frame.line_offset
             logger.debug(f"Line offset: {line_offset}")
 
+            # 检测是否到达转弯点
             if camera.processed_frame.turn_ready:
                 logger.info("Turn ready.")
-                motor.set_speed(0, 0)
-                break
+                return True
 
             # 通过PID控制小车
-            pid_out = pid(line_offset)
+            pid_out = car.motor.pid(line_offset)
             logger.debug(f"PID out: {pid_out}")
 
             speed_right = int(self.base_speed + pid_out)
@@ -58,8 +62,17 @@ class FollowAndDetectTask(Task):
                 speed_left = self.max_speed
 
             logger.debug(f"Speed: left={speed_left}, right={speed_right}")
-            motor.set_speed(speed_left, speed_right)
+            car.motor.set_speed(speed_left, speed_right)
             time.sleep(camera.fps)
 
-        # ToDo
-        # 接下来，抵达岔路口时，进行中心线切换（左转直到新的中心线 然后直行）
+            logger.debug("-" * 20)
+
+
+class GoStraightTask(Task):
+    def execute(self, context: ExecutionContext):
+        raise NotImplementedError
+
+
+class DriveToEndTask(Task):
+    def execute(self, context: ExecutionContext):
+        raise NotImplementedError

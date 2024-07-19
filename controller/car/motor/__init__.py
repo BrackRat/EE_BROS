@@ -12,3 +12,6 @@ class Motor(Controller):
 
     def set_speed(self, left: int, right: int):
         self.communicator.send_data({"cmd": "set_speed", "left": left, "right": right})
+
+    def stop(self):
+        self.communicator.send_data({"cmd": "set_speed", "left": 0, "right": 0})

@@ -15,3 +15,6 @@ class Car(Controller):
 
     def set_speed(self, left: int, right: int):
         self.motor.set_speed(left, right)
+
+    def stop(self):
+        self.motor.stop()

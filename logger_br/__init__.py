@@ -15,5 +15,12 @@ def setup_logger():
     logger.add(log_filename, level=level, rotation="00:00", retention="1 day", compression="zip")
     logger.add(sys.stdout, level=level)
 
+    logger.info(r"""
+       ___  ___  ____  ____
+      / _ )/ _ \/ __ \/ __/
+     / _  / , _/ /_/ /\ \  
+    /____/_/|_|\____/___/   [Ver 0.0.1]
+    """)
+
 
 setup_logger()
