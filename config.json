@@ -1,13 +1,55 @@
 {
   "logger": {
-    "level": "DEBUG"
+    "level": {
+      "value": "DEBUG",
+      "name": "日志级别",
+      "options": {
+        "type": "enum",
+        "values": ["DEBUG", "INFO", "WARN", "ERROR"]
+      }
+    }
   },
   "camera": {
-    "address": 0,
-    "fps": 60
+    "address": {
+      "value": 0,
+      "name": "摄像头地址",
+      "options": {
+        "type": "enum",
+        "values": ["/dev/video0", "/dev/video1",0, 1]
+      }
+    },
+    "fps": {
+      "value": 60,
+      "name": "摄像头帧率",
+      "options": {
+        "type": "range",
+        "min": 1,
+        "max": 120
+      }
+    }
   },
   "serial": {
-    "port": "COM5",
-    "baud_rate": 115200
+    "port": {
+      "value": "COM5",
+      "name": "首要串口地址",
+      "options": {
+        "type": "enum",
+        "values": ["/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3", "/dev/ttyUSB4","COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
+      }
+    },
+    "baud_rate": {
+      "value": 115200,
+      "name": "首要串口波特率",
+      "options": {
+        "type": "enum",
+        "values": [9600, 14400, 19200, 38400, 57600, 115200, 128000, 256000]
+      }
+    }
+  },
+  "config_info": {
+    "last_update": {
+      "value": "2024-7-21",
+      "name": "通过 F-BROS 配置工具最后更新时间"
+    }
   }
 }
