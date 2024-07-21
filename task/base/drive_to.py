@@ -14,6 +14,7 @@ class FollowLineUntilTurnPoint(Task):
     def __init__(self, name: str, base_speed: int, max_speed_dela: int, clear_pid: bool):
         super().__init__(name)
         self.base_speed = base_speed
+        self.max_speed_dela = max_speed_dela
         self.max_speed = base_speed + max_speed_dela
         self.min_speed = base_speed - max_speed_dela
         self.clear_pid = clear_pid
@@ -21,6 +22,9 @@ class FollowLineUntilTurnPoint(Task):
     def execute(self, context: ExecutionContext):
         camera: ThreadedCamera = context['camera']
         car: Car = context['main_car_controller']
+
+        # change output limt to -delta -> delta
+        car.motor.pid.output_limits = (-self.max_speed_dela, self.max_speed_dela)
 
         if self.clear_pid:
             car.motor.pid.reset()
@@ -55,8 +59,8 @@ class FollowLineUntilTurnPoint(Task):
             pid_out = car.motor.pid(line_offset)
             logger.debug(f"PID out: {pid_out:.2f}")
 
-            speed_right = int(self.base_speed + pid_out)
-            speed_left = int(self.base_speed - pid_out)
+            speed_right = int(self.base_speed - pid_out)
+            speed_left = int(self.base_speed + pid_out)
             if speed_right > self.max_speed:
                 speed_right = self.max_speed
             if speed_left > self.max_speed:

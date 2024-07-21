@@ -11,7 +11,7 @@ class CarRunOuterCircleNoUltrasound(Task):
         # 子任务列表
         self.tasks = [
             # StartCommandTask("Send Start Command"),
-            FollowLineUntilTurnPoint("Drive to Intersection", base_speed=10, max_speed_dela=3, clear_pid=False),
+            FollowLineUntilTurnPoint("Drive to Intersection", base_speed=15, max_speed_dela=8, clear_pid=False),
             GoStraightTask("Go Straight"),
             DriveToEndTask("Drive to End"),
             StopCommandTask("Send Stop Command")
