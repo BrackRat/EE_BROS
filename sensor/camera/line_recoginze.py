@@ -13,7 +13,10 @@ def get_line_position_from_img(img, draw_img=False):
     binary = cv2.bitwise_not(middle_slice)
     contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     if not contours:
-        return 0
+        if draw_img:
+            return 0, img
+        else:
+            return 0
 
     center_points = []
     for contour in contours:

@@ -15,6 +15,7 @@ class FollowLineUntilTurnPoint(Task):
         super().__init__(name)
         self.base_speed = base_speed
         self.max_speed = base_speed + max_speed_dela
+        self.min_speed = base_speed - max_speed_dela
         self.clear_pid = clear_pid
 
     def execute(self, context: ExecutionContext):
@@ -60,6 +61,11 @@ class FollowLineUntilTurnPoint(Task):
                 speed_right = self.max_speed
             if speed_left > self.max_speed:
                 speed_left = self.max_speed
+
+            if speed_right < self.min_speed:
+                speed_right = self.min_speed
+            if speed_left < self.min_speed:
+                speed_left = self.min_speed
 
             logger.debug(f"Speed: left={speed_left}, right={speed_right}")
             car.motor.set_speed(speed_left, speed_right)
