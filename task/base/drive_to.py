@@ -59,8 +59,8 @@ class FollowLineUntilTurnPoint(Task):
             pid_out = car.motor.pid(line_offset)
             logger.debug(f"PID out: {pid_out:.2f}")
 
-            speed_right = int(self.base_speed - pid_out)
-            speed_left = int(self.base_speed + pid_out)
+            speed_right = int(self.base_speed + pid_out)
+            speed_left = int(self.base_speed - pid_out)
             if speed_right > self.max_speed:
                 speed_right = self.max_speed
             if speed_left > self.max_speed:
