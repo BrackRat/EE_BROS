@@ -4,7 +4,7 @@ from simple_pid import PID
 
 
 class Motor(Controller):
-    pid = PID(0.013, 0, 0.02, )
+    pid = PID(0.007, 0, 0, )
 
     def __init__(self, controller_id: str, communicator: Communicator):
         super().__init__(controller_id)
