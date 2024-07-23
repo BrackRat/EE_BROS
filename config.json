@@ -1,21 +1,72 @@
 {
+  "motor": {
+    "kp": {
+      "value": 0.51,
+      "temp_value": 0.51,
+      "power": 0,
+      "name": "巡线电机 Kp",
+      "options": {
+        "type": "range_science",
+        "min": 0,
+        "max": 1,
+        "power_min": -8,
+        "power_max": 2
+      }
+    },
+    "ki": {
+      "value": 0.5,
+      "temp_value": 0.5,
+      "power": 0,
+      "name": "巡线电机 Kp",
+      "options": {
+        "type": "range_science",
+        "min": 0,
+        "max": 1,
+        "power_min": -8,
+        "power_max": 2
+      }
+    },
+    "kd": {
+      "value": 0.05,
+      "temp_value": 0.5,
+      "power": -1,
+      "name": "巡线电机 Kp",
+      "options": {
+        "type": "range_science",
+        "min": 0,
+        "max": 1,
+        "power_min": -8,
+        "power_max": 2
+      }
+    }
+  },
   "logger": {
     "level": {
       "value": "DEBUG",
       "name": "日志级别",
       "options": {
         "type": "enum",
-        "values": ["DEBUG", "INFO", "WARN", "ERROR"]
+        "values": [
+          "DEBUG",
+          "INFO",
+          "WARN",
+          "ERROR"
+        ]
       }
     }
   },
   "camera": {
     "address": {
-      "value": 0,
+      "value": "/dev/video0",
       "name": "摄像头地址",
       "options": {
         "type": "enum",
-        "values": ["/dev/video0", "/dev/video1",0, 1]
+        "values": [
+          "/dev/video0",
+          "/dev/video1",
+          0,
+          1
+        ]
       }
     },
     "fps": {
@@ -23,18 +74,35 @@
       "name": "摄像头帧率",
       "options": {
         "type": "range",
-        "min": 1,
-        "max": 120
+        "min": 0.1,
+        "max": 120,
+        "step": 5
       }
     }
   },
   "serial": {
     "port": {
-      "value": "COM5",
+      "value": "/dev/ttyUSB0",
       "name": "首要串口地址",
       "options": {
         "type": "enum",
-        "values": ["/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3", "/dev/ttyUSB4","COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
+        "values": [
+          "/dev/ttyUSB0",
+          "/dev/ttyUSB1",
+          "/dev/ttyUSB2",
+          "/dev/ttyUSB3",
+          "/dev/ttyUSB4",
+          "COM1",
+          "COM2",
+          "COM3",
+          "COM4",
+          "COM5",
+          "COM6",
+          "COM7",
+          "COM8",
+          "COM9",
+          "COM10"
+        ]
       }
     },
     "baud_rate": {
@@ -42,13 +110,22 @@
       "name": "首要串口波特率",
       "options": {
         "type": "enum",
-        "values": [9600, 14400, 19200, 38400, 57600, 115200, 128000, 256000]
+        "values": [
+          9600,
+          14400,
+          19200,
+          38400,
+          57600,
+          115200,
+          128000,
+          256000
+        ]
       }
     }
   },
   "config_info": {
     "last_update": {
-      "value": "2024-7-21",
+      "value": "2024-07-23T05:02:30.296Z",
       "name": "通过 F-BROS 配置工具最后更新时间"
     }
   }
