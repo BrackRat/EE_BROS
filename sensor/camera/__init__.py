@@ -26,18 +26,25 @@ class ThreadedCamera(Sensor):
 
     processed_frame = None
 
-    def __init__(self, sensor_id: str, fps=1 / Config.get('camera.fps')):
+    def __init__(self, sensor_id: str, fps=1 / Config.get('camera.fps'), thresh=100, interactive_debug=False):
         super().__init__(sensor_id)
         self.frame = None
         self.capture = cv2.VideoCapture(Config.get('camera.address'))
         self.capture.set(6, cv2.VideoWriter.fourcc('M', 'J', 'P', 'G'))  # 设置编码格式
         self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 5)  # 设置最大缓冲区大小
+        # set capture size to 640x480
+        self.capture.set(3, 640)
+        self.capture.set(4, 480)
 
         self.fps = fps  # 设置[检测]程序的采样速率,单位为秒, 默认为60帧每秒
         self.fps_ms = int(self.fps * 1000)
         logger.debug(f"Camera: {sensor_id} address: {Config.get('camera.address')} | FPS: {1 / self.fps}")
 
         self.detection_times = []  # 检测延迟
+
+        # 交互式调试
+        self.thresh = thresh
+        self.interactive_debug = interactive_debug
 
         self.thread = threading.Thread(target=self.update_thread, args=())
         self.thread.daemon = True
@@ -59,7 +66,10 @@ class ThreadedCamera(Sensor):
                     self.frame = frame.copy()
 
             # 处理
-            line_position, img = get_line_position_from_img(self.frame, draw_img=True)
+            line_position, img = get_line_position_from_img(self.frame,
+                                                            thresh=self.thresh,
+                                                            draw_img=True,
+                                                            interactive=self.interactive_debug)
 
             self.processed_frame = ProcessedFrame(frame=img,
                                                   turn_ready=False,

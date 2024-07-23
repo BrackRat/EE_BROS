@@ -1,12 +1,13 @@
 import cv2
+import numpy as np
 
 
-def get_line_position_from_img(img, draw_img=False, debug=False):
+def get_line_position_from_img(img, thresh, draw_img=False, debug=False, interactive=False):
     """
     对二值化后的图片中间部分，上下20像素，寻找黑色色块的中心点，返回中心点坐标相对图片中心的偏移量，正数为右，负数为左。
     """
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    _, binary = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)
+    _, binary = cv2.threshold(gray, thresh, 255, cv2.THRESH_BINARY)
     if debug:
         cv2.imshow("binary", binary)
     # 提取图像中间部分
@@ -22,8 +23,6 @@ def get_line_position_from_img(img, draw_img=False, debug=False):
     binary = cv2.dilate(binary, kernel, iterations=3)
     if debug:
         cv2.imshow("dilate", binary)
-
-
 
     contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -62,10 +61,21 @@ def get_line_position_from_img(img, draw_img=False, debug=False):
         text_x = max(0, min(center_points[0][0] + 30, img.shape[1] - 100))
         text_y = max(30, min(center_points[0][1], img.shape[0] - 10))
         cv2.putText(img, f"Offset: {offset}", (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
-        return offset, img
+
+        # 如果是 interactive 模式, 那么返回的不是 img 而是在 img 下方拼接 binary 的图像
+        if interactive:
+            # Create a combined image with enough space for both images
+            combined_img = np.zeros((img.shape[0] + binary.shape[0], img.shape[1], 3), dtype=np.uint8)
+            # Place original image at the top
+            combined_img[:img.shape[0], :img.shape[1]] = img
+            # Place binary image at the bottom
+            combined_img[img.shape[0]:img.shape[0] + binary.shape[0], :binary.shape[1]] = cv2.cvtColor(binary,
+                                                                                                       cv2.COLOR_GRAY2BGR)
+            return offset, combined_img
+        else:
+            return offset, img
     else:
         return offset
-
 
 
 if __name__ == "__main__":
