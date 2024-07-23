@@ -30,6 +30,7 @@ class ThreadedCamera(Sensor):
         super().__init__(sensor_id)
         self.frame = None
         self.capture = cv2.VideoCapture(Config.get('camera.address'))
+        self.capture.set(6, cv2.VideoWriter.fourcc('M', 'J', 'P', 'G'))  # 设置编码格式
         self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 5)  # 设置最大缓冲区大小
 
         self.fps = fps  # 设置[检测]程序的采样速率,单位为秒, 默认为60帧每秒

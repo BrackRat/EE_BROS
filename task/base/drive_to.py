@@ -73,7 +73,7 @@ class FollowLineUntilTurnPoint(Task):
 
             logger.debug(f"Speed: left={speed_left}, right={speed_right}")
             car.motor.set_speed(speed_left, speed_right)
-            time.sleep(camera.fps)
+            time.sleep(0.001)
 
             logger.debug("-" * 50)
 

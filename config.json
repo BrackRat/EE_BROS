@@ -79,7 +79,7 @@
   },
   "camera": {
     "address": {
-      "value": "/dev/video0",
+      "value": 0,
       "name": "摄像头地址",
       "options": {
         "type": "enum",
