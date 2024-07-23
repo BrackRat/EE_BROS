@@ -28,7 +28,7 @@ class SerialConnection(Communicator):
             try:
                 self.serial.write(text.encode())
                 logger.debug(f"Sent data: {text.strip()}")
-                time.sleep(0.05)
+                time.sleep(0.01)
             except Exception as e:
                 logger.error(f"Failed to send data: {text.strip()} {e}")
         else:
