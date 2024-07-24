@@ -13,7 +13,7 @@ async def set_camera_threshold(data):
     threshold = data['threshold']
     logger.info(f"Setting camera threshold to {threshold}")
     camera.thresh = threshold
-    time.sleep(camera.fps * 5)
+    time.sleep(camera.fps_sleep * 5)
     frame: ProcessedFrame = camera.processed_frame
 
     # if frame is no None, then return a base64 encoded img
@@ -58,7 +58,7 @@ async def server(websocket, path):
 
 
 if __name__ == "__main__":
-    camera = ThreadedCamera('BROS-camera', fps=1 / 10, interactive_debug=True)
+    camera = ThreadedCamera('BROS-camera', fps=10, interactive_debug=True)
 
     start_server = websockets.serve(server, "localhost", 10502)
 

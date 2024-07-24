@@ -1,8 +1,8 @@
 {
   "motor": {
     "kp": {
-      "value": 0.3,
-      "temp_value": 0.3,
+      "value": 0.35,
+      "temp_value": 0.35,
       "power": 0,
       "name": "巡线电机 Kp",
       "options": {
@@ -27,8 +27,8 @@
       }
     },
     "kd": {
-      "value": 0.01,
-      "temp_value": 0.01,
+      "value": 0,
+      "temp_value": 0,
       "power": 0,
       "name": "巡线电机 Kd",
       "options": {
@@ -37,28 +37,6 @@
         "max": 1,
         "power_min": -8,
         "power_max": 2
-      }
-    }
-  },
-  "task_1": {
-    "speed": {
-      "value": 15,
-      "name": "基准速度",
-      "options": {
-        "type": "range",
-        "min": 0.1,
-        "max": 50,
-        "step": 1
-      }
-    },
-    "max_speed_delta": {
-      "value": 8,
-      "name": "速度最大差值",
-      "options": {
-        "type": "range",
-        "min": 0.1,
-        "max": 50,
-        "step": 1
       }
     }
   },
@@ -78,6 +56,20 @@
     }
   },
   "camera": {
+    "thresh": {
+      "value": 81,
+      "name": "摄像头二值化阈值",
+      "options": {
+        "type": "range",
+        "min": 0,
+        "max": 255,
+        "step": 1,
+        "interactive": {
+          "cmd": "set_camera_threshold",
+          "key": "threshold"
+        }
+      }
+    },
     "address": {
       "value": 0,
       "name": "摄像头地址",
@@ -104,7 +96,7 @@
   },
   "serial": {
     "port": {
-      "value": "/dev/ttyUSB0",
+      "value": "COM5",
       "name": "首要串口地址",
       "options": {
         "type": "enum",
@@ -145,10 +137,34 @@
       }
     }
   },
+  "task_1": {
+    "base_speed": {
+      "value": 15,
+      "name": "任务1 基础速度",
+      "options": {
+        "type": "range",
+        "min": 0,
+        "max": 50
+      }
+    },
+    "max_speed_delta": {
+      "value": 8,
+      "name": "任务1 最大速度差",
+      "options": {
+        "type": "range",
+        "min": 0,
+        "max": 50
+      }
+    }
+  },
   "config_info": {
     "last_update": {
-      "value": "2024-07-23T06:47:44.711Z",
-      "name": "通过 F-BROS 配置工具最后更新时间"
+      "name": "BROS Config Last Update Time",
+      "value": "2024-07-23T17:07:16.113Z"
+    },
+    "interactive": {
+      "name": "Interactive Mode Url",
+      "value": "ws://localhost:10502/ws"
     }
   }
 }

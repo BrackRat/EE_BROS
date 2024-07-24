@@ -9,7 +9,7 @@ from config import Config
 class CarRunOuterCircleNoUltrasound(Task):
     def __init__(self, name):
         super().__init__(name)
-        base_speed = int(Config.get('task_1.speed'))
+        base_speed = int(Config.get('task_1.base_speed'))
         max_speed_dela = int(Config.get('task_1.max_speed_delta'))
         logger.info(f"Base speed:{base_speed} | Max speed delta: {max_speed_dela}")
 
