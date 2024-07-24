@@ -26,6 +26,7 @@ class Task(ABC):
     def __init__(self, name: str):
         self.name = name
 
+    @logger.catch()
     @abstractmethod
     def execute(self, context: ExecutionContext) -> None:
         """

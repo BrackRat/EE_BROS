@@ -26,21 +26,23 @@ class ThreadedCamera(Sensor):
 
     processed_frame = None
 
-    def __init__(self, sensor_id: str, fps=1 / Config.get('camera.fps'), thresh=100, interactive_debug=False):
+    def __init__(self, sensor_id: str, fps=Config.get('camera.fps'), thresh=100, interactive_debug=False):
         super().__init__(sensor_id)
         self.frame = None
         self.capture = cv2.VideoCapture(Config.get('camera.address'))
         self.capture.set(6, cv2.VideoWriter.fourcc('M', 'J', 'P', 'G'))  # 设置编码格式
         self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 5)  # 设置最大缓冲区大小
         # set capture size to 640x480
-        self.capture.set(3, 640)
-        self.capture.set(4, 480)
+        # self.capture.set(3, 800)
+        # self.capture.set(4, 600)
 
         self.fps = fps  # 设置[检测]程序的采样速率,单位为秒, 默认为60帧每秒
-        self.fps_ms = int(self.fps * 1000)
+        self.fps_sleep = 1 / self.fps
+
         logger.debug(f"Camera: {sensor_id} address: {Config.get('camera.address')} | FPS: {1 / self.fps}")
 
-        self.detection_times = []  # 检测延迟
+        self.update_time = []
+        self.current_fps = 0
 
         # 交互式调试
         self.thresh = thresh
@@ -58,6 +60,19 @@ class ThreadedCamera(Sensor):
         """
         return True
 
+    def update_fps(self):
+        """
+        获取当前时间，加入到更新时间列表中
+        然后计算fps 存放到current_fps中
+        只记录最新30个时间
+        """
+        self.update_time.append(time.time())
+        if len(self.update_time) > 30:
+            self.update_time.pop(0)
+        if len(self.update_time) > 2:
+            self.current_fps = 1 / (sum([self.update_time[i] - self.update_time[i - 1] for i in range(1, len(self.update_time))]) / (len(self.update_time) - 1))
+
+    @logger.catch()
     def update_thread(self):
         while True:
             if self.capture.isOpened():
@@ -79,7 +94,9 @@ class ThreadedCamera(Sensor):
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-            time.sleep(self.fps)
+            self.update_fps()
+            logger.debug(f"Camera: {self.sensor_id} FPS: {self.current_fps:.2f}")
+            time.sleep(self.fps_sleep)
 
     def get_data(self) -> ProcessedFrame:
         return self.processed_frame
