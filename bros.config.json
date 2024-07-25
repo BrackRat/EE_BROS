@@ -1,0 +1,10 @@
+{
+  "execute": [
+    {
+      "name": "任务1",
+      "executor_path": "/home/name/Desktop/BROS/venv/bin/python",
+      "work_dir": "/home/name/Desktop/BROS",
+      "script_path": "/home/name/Desktop/BROS/main.py"
+    }
+  ]
+}
